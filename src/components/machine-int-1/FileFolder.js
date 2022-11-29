@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./Folder.css";
 
-const FileFolder = ({ explorer, handleInsertNode, handleDelete }) => {
+const FileFolder = ({ explorer, handleInsertNode, handleDelete,handleUpdate }) => {
   const [expand, setExpand] = useState(false);
+  const [name,setName] = useState('')
+  const [isUpdate,setIsUpdate] = useState(false)
   const [showInput, setShowInput] = useState({
     visible: false,
     isFolder: false,
@@ -17,17 +19,34 @@ const FileFolder = ({ explorer, handleInsertNode, handleDelete }) => {
     });
   };
 
+  const handleUpdateHandler = (e,isFolder) =>{
+    e.stopPropagation();
+    setExpand(true);
+    setName(explorer.name)
+    setIsUpdate(true)
+    setShowInput({
+      visible: true,
+      isFolder,
+    })
+  }
+
  const handleDeleteHandler = (e,id) =>{
   e.stopPropagation()
   handleDelete(id)
  }
 
-  const onAddFolder = (e) => {
-    if (e.keyCode === 13 && e.target.value) {
+  const onAddFolder = (e,isUpdate) => {
+    if (e.keyCode === 13 && e.target.value && !isUpdate) {
       handleInsertNode(explorer.id, e.target.value, showInput.isFolder);
       setShowInput({ ...showInput, visible: false });
     }
+    if (e.keyCode === 13 && e.target.value && isUpdate) {
+      handleUpdate(explorer.id, name)
+      setShowInput({ ...showInput, visible: false });
+    }
   };
+
+
 
 
   if (explorer?.isFolder) {
@@ -37,6 +56,7 @@ const FileFolder = ({ explorer, handleInsertNode, handleDelete }) => {
           <span>📁 {explorer.name}</span>
           <button onClick={(e) => handleNewFolder(e, true)}>Folder +</button>
           <button onClick={(e) => handleNewFolder(e, false)}>File +</button>
+          <button onClick={(e) => handleUpdateHandler(e,true)}>Update</button>
           <button onClick={(e) =>handleDeleteHandler(e,explorer.id) }>Delete -</button>
         </div>
         <div
@@ -49,7 +69,9 @@ const FileFolder = ({ explorer, handleInsertNode, handleDelete }) => {
                 type="text"
                 className="inputContainer__input"
                 autoFocus
-                onKeyDown={onAddFolder}
+                value={name}
+                onChange={(e)=>setName(e.target.value)}
+                onKeyDown={(e)=>onAddFolder(e,isUpdate)}
                 onBlur={() => {
                   setShowInput({ ...showInput, visible: false });
                 }}
@@ -60,6 +82,7 @@ const FileFolder = ({ explorer, handleInsertNode, handleDelete }) => {
             <FileFolder
               handleInsertNode={handleInsertNode}
               handleDelete={handleDelete}
+              handleUpdate={handleUpdate}
               key={exp.name}
               explorer={exp}
             />
@@ -78,6 +101,25 @@ const FileFolder = ({ explorer, handleInsertNode, handleDelete }) => {
         >
           Delete -
         </button>
+        <button 
+          style={{ alignItems: "center", margin: "5px" }}
+        onClick={(e) => handleUpdateHandler(e,true)}>Update</button>
+       {showInput.visible && (
+            <div className="inputContainer" >
+              {/* <span>{showInput.isFolder ? "📁" : "📄"} </span> */}
+              <input
+                type="text"
+                className="inputContainer__input"
+                autoFocus
+                value={name}
+                onChange={(e)=>setName(e.target.value)}
+                onKeyDown={(e)=>onAddFolder(e,isUpdate)}
+                onBlur={() => {
+                  setShowInput({ ...showInput, visible: false });
+                }}
+              />
+            </div>
+          )}
       </div>
     );
   }

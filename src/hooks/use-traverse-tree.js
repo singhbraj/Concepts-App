@@ -36,12 +36,38 @@ const useTreeTraversal = () => {
     } 
       let newTree = [];
      newTree =  finalTree.items.map((item) => {
-         return deleteNode(item, folderId, item.isFolder);
+         return deleteNode(item, folderId);
       
       });
       return { ...finalTree, items: newTree };
 };
-return { insertNode, deleteNode };
+
+const updateNode =(finalTree,id, name) =>{
+    let isParent = false;
+    finalTree.items.forEach((item) => {
+      if (item.id === id) {
+        isParent = true;
+      }
+    });
+
+    if (isParent) {
+      const newNode = finalTree.items.map((item) => {
+         if(item.id == id){
+            return {...item,name:name}
+         }
+         return item;
+        })
+      return { ...finalTree, items: newNode }
+    } 
+      let newTree = [];
+     newTree =  finalTree.items.map((item) => {
+         return updateNode(item, id, name, item.isFolder);
+      
+      });
+      return { ...finalTree, items: newTree };
+}
+
+return { insertNode, deleteNode, updateNode };
 };
 
 export default useTreeTraversal;
