@@ -13,6 +13,7 @@ const FileFolder = ({ explorer, handleInsertNode, handleDelete,handleUpdate }) =
   const handleNewFolder = (e, isFolder) => {
     e.stopPropagation();
     setExpand(true);
+    setName('')
     setShowInput({
       visible: true,
       isFolder,
