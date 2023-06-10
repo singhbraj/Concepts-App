@@ -8,23 +8,29 @@ const DragAndDrop= () => {
   const [list, setList] = useState(['Item 1','Item 2','Item 3','Item 4','Item 5','Item 6']);
  
   const dragStart = (e,position)=>{
-
+    console.log("position1",position)
     dragItem.current = position
     console.log(e.target.innerHTML)
   }
 
   const dragEnter = (e,position)=>{
+    console.log("position2",position)
     dragOverItem.current = position;
     console.log(e.target.innerHTML);
   }
 
   const drop =(e) =>{
+    console.log("drop Called!!")
     const copyListItems = [...list];
+    console.log("dragItem.current",dragItem.current)
     const dragItemContent = copyListItems[dragItem.current];
+    console.log({dragItemContent})
+    console.log("dragOverItem.current",dragOverItem.current)
     copyListItems.splice(dragItem.current,1)
     copyListItems.splice(dragOverItem.current,0,dragItemContent)
     dragItem.current = null;
     dragOverItem.current=null;
+    console.log({copyListItems})
     setList(copyListItems)
   }
 
@@ -42,7 +48,8 @@ const DragAndDrop= () => {
         onDragEnter={(e) => dragEnter(e, index)}
         onDragEnd={drop}
         onDragOver={(e) => e.preventDefault()}
-        draggable>
+        draggable
+        >
           {item}
       </div>
       ))}

@@ -1,0 +1,24 @@
+.container{
+    padding:10px;
+}
+
+.box {
+    border: 1px solid red;
+    height: 100px;
+    width: 300px;
+    overflow-y: scroll;
+  }
+  
+  .input {
+    margin: 10px;
+  }
+  
+  .button {
+    border: 1px solid blue;
+    padding: 10px;
+    height: 30px;
+    width: 50px;
+    margin: 10px 0;
+    cursor: pointer;
+  }
+  
