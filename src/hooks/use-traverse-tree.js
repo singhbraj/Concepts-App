@@ -7,7 +7,6 @@ const useTreeTraversal = () => {
         isFolder: isFolder,
         items: [],
       });
-      console.log(tree);
       return tree;
     }
 
@@ -16,8 +15,11 @@ const useTreeTraversal = () => {
       return insertNode(ob, folderId, item, isFolder);
     });
 
+  console.log({latestNode})
+
     let updatedTree = { ...tree, items: latestNode };
-    console.log(updatedTree);
+    
+    console.log("__________updatedtree___________",updatedTree)
 
     return updatedTree;
   };
